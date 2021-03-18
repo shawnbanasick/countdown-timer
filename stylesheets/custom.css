@@ -6,6 +6,7 @@ body {
 .digital {
   font-family: "digital", Arial, sans-serif;
   font-size: 20em;
+  line-height: 1;
   font-weight: 900;
   font-style: 900;
   color: #83cafe;
