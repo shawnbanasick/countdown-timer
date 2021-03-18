@@ -1,0 +1,29 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.digital {
+  font-family: "digital", Arial, sans-serif;
+  font-size: 20em;
+  font-weight: 900;
+  font-style: 900;
+  color: #83cafe;
+  margin-right: 20px;
+  border: 2px solid white;
+  max-height: 98vh;
+  text-align: right;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-flow: column wrap;
+  width: 100vw;
+  height: 100vh;
+  border: 2px solid white;
+}
+
+#goButton {
+  display: block;
+}
