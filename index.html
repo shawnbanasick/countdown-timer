@@ -24,6 +24,7 @@
     <title>Countdown Timer</title>
 
     <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="src/jquery.fittext.js"></script>
 
     <link
       rel="stylesheet"
@@ -139,6 +140,7 @@
           }
           // tmp != 0 || (tmp = time);
           x.text(m);
+          x.fitText(0.15);
           sec.text(tmp - 59);
 
           // with 10 minutes left
