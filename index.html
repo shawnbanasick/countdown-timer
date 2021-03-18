@@ -100,8 +100,20 @@
           <button class="btn" id="goButton">Start</button>
           <button class="btn" id="goButton">Stop</button>
         </div>
+        <div class="spacerDiv"></div>
+        <div class="spacerDiv"></div>
+        <label for="yellowTime">Yellow at:</label>
+        <input id="yellowTime" />
+        <div class="spacerDiv"></div>
+        <div class="spacerDiv"></div>
+
+        <label for="orangeTime">Orange at:</label>
+        <input id="orangeTime" />
       </div>
-      <div class="digital">0</div>
+      <div class="rightContainer">
+        <div class="digital">0</div>
+        <div class="seconds"></div>
+      </div>
     </div>
     <script>
       $(document).ready(function () {
@@ -109,35 +121,44 @@
         let tmp;
         let x;
         let counter;
+        let sec;
 
         // timer
         function myTimer() {
           var c = tmp--,
             m = (c / 60) >> 0;
-          tmp != 0 || (tmp = time);
+
+          if (tmp === 0) {
+            tmp = tmp - 59;
+            $("body").css("background-color", "red");
+            $(".digital").css("color", "black");
+            $(".btn")
+              .removeClass("btnOrange", "btnYellow", "btn")
+              .addClass("btnRed");
+            $(".seconds").css("color", "black");
+          }
+          // tmp != 0 || (tmp = time);
           x.text(m);
-          console.log(tmp);
-          console.log("1 sec");
+          sec.text(tmp - 59);
 
           // with 10 minutes left
           if (tmp - 58 === 600) {
-            $("body").css("background-color", "goldenrod");
+            $("body").css("background-color", "#FFCC00");
             $(".digital").css("color", "black");
-            $(".btn").css("color", "black");
-            $(".btn").css("border", "2px solid black");
+            $(".btn").removeClass("btn").addClass("btnYellow");
+            $(".seconds").css("color", "black");
           }
 
           if (tmp - 58 === 300) {
             $("body").css("background-color", "orange");
             $(".digital").css("color", "black");
-            $(".btn").css("color", "black");
-            $(".btn").css("background-color", "orange");
-            $(".btn").css("border", "2px solid black");
+            $(".btn").removeClass("btn", "btnYellow").addClass("btnOrange");
+            $(".seconds").css("color", "black");
           }
 
           if (tmp - 55 === 0) {
             console.log("clearing");
-            clearInterval(counter);
+            // clearInterval(counter);
           }
         }
 
@@ -151,6 +172,7 @@
           time = input * 60 + 59;
           tmp = time;
           x = $(".digital");
+          sec = $(".seconds");
 
           counter = setInterval(myTimer, 1000);
         });
