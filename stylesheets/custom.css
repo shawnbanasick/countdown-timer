@@ -3,10 +3,24 @@ body {
   color: white;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+
+  width: 100vw;
+  height: 100vh;
+  border: 2px solid white;
+}
+
+.leftContainer {
+  max-width: 200px;
+}
+
 .digital {
+  grid-column-start: 2;
   font-family: "digital", Arial, sans-serif;
-  font-size: 20em;
-  line-height: 1;
+  font-size: 100vh;
+  line-height: 0.8;
   font-weight: 900;
   font-style: 900;
   color: #83cafe;
@@ -16,15 +30,27 @@ body {
   text-align: right;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  flex-flow: column wrap;
-  width: 100vw;
-  height: 100vh;
-  border: 2px solid white;
-}
-
 #goButton {
   display: block;
+}
+
+.btn {
+  grid-column-start: 1;
+  background-color: black;
+  border: 2px solid lightblue;
+  border-radius: 3px;
+  color: lightblue;
+  margin: 10px;
+  height: 30px;
+}
+
+input {
+  margin: 10px;
+  max-width: 150px;
+  height: 30px;
+}
+
+.buttonsHolder {
+  display: flex;
+  flex-direction: row;
 }

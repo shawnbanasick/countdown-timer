@@ -94,32 +94,65 @@
 
   <body>
     <div class="container">
-      <input id="totalTime" />
-      <br />
-      <button id="goButton">Start</button>
+      <div>
+        <input id="totalTime" />
+        <div class="buttonsHolder">
+          <button class="btn" id="goButton">Start</button>
+          <button class="btn" id="goButton">Stop</button>
+        </div>
+      </div>
       <div class="digital">0</div>
     </div>
     <script>
       $(document).ready(function () {
+        let time;
+        let tmp;
+        let x;
+        let counter;
+
         // timer
-        function myTimer(time, tmp, x) {
+        function myTimer() {
           var c = tmp--,
             m = (c / 60) >> 0;
           tmp != 0 || (tmp = time);
           x.text(m);
+          console.log(tmp);
           console.log("1 sec");
-          return;
+
+          // with 10 minutes left
+          if (tmp - 58 === 600) {
+            $("body").css("background-color", "goldenrod");
+            $(".digital").css("color", "black");
+            $(".btn").css("color", "black");
+            $(".btn").css("border", "2px solid black");
+          }
+
+          if (tmp - 58 === 300) {
+            $("body").css("background-color", "orange");
+            $(".digital").css("color", "black");
+            $(".btn").css("color", "black");
+            $(".btn").css("background-color", "orange");
+            $(".btn").css("border", "2px solid black");
+          }
+
+          if (tmp - 55 === 0) {
+            console.log("clearing");
+            clearInterval(counter);
+          }
         }
 
         // start button
         $("#goButton").click(function () {
+          if (counter) {
+            clearInterval(counter);
+          }
           let input = $("#totalTime").val();
           console.log(input);
-          let time = input * 60;
-          let tmp = time;
-          let x = $(".digital");
+          time = input * 60 + 59;
+          tmp = time;
+          x = $(".digital");
 
-          let counter = setInterval("myTimer(time, tmp, x)", 1000);
+          counter = setInterval(myTimer, 1000);
         });
       });
     </script>
