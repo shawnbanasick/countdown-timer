@@ -134,11 +134,14 @@
           if (tmp === 0) {
             tmp = tmp - 59;
             $("body").css("background-color", "red");
+            55;
             $(".digital").css("color", "black");
             $(".btn").removeClass("btnOrange").addClass("btnRed");
             $(".seconds").css("color", "black");
             $("input").css("background-color", "red");
             $("input").css("color", "black");
+            $("#goButton").css("background-color", "red");
+            $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
           }
           // tmp != 0 || (tmp = time);
@@ -151,6 +154,8 @@
             $("body").css("background-color", "#FFCC00");
             $("input").css("background-color", "#FFCC00");
             $("input").css("color", "black");
+            $("input").css("border", "2px solid black");
+
             $(".digital").css("color", "black");
             $(".inputLabel").css("color", "black");
             $(".btn").removeClass("btn").addClass("btnYellow");
@@ -164,7 +169,8 @@
             $(".digital").css("color", "black");
             $(".inputLabel").css("color", "black");
             $(".btn").removeClass("btnYellow").addClass("btnOrange");
-            $(".btn").css("background-color", "#ff7b00");
+            $("#goButton").css("background-color", "#ff7b00");
+            $("#stopButton").css("background-color", "#ff7b00");
             $(".seconds").css("color", "black");
           }
 
