@@ -99,17 +99,17 @@
         <input id="totalTime" />
         <div class="buttonsHolder">
           <button class="btn" id="goButton">Start</button>
-          <button class="btn" id="goButton">Stop</button>
+          <button class="btn" id="stopButton">Stop</button>
         </div>
         <div class="spacerDiv"></div>
         <div class="spacerDiv"></div>
-        <label for="yellowTime">Yellow at:</label>
-        <input id="yellowTime" />
+        <label class="inputLabel" for="yellowTime">Yellow at:</label>
+        <input value="10" id="yellowTime" />
         <div class="spacerDiv"></div>
         <div class="spacerDiv"></div>
 
-        <label for="orangeTime">Orange at:</label>
-        <input id="orangeTime" />
+        <label class="inputLabel" for="orangeTime">Orange at:</label>
+        <input value="5" id="orangeTime" />
       </div>
       <div class="rightContainer">
         <div class="digital">0</div>
@@ -123,6 +123,8 @@
         let x;
         let counter;
         let sec;
+        let yellowAt = 600;
+        let orangeAt = 300;
 
         // timer
         function myTimer() {
@@ -133,36 +135,51 @@
             tmp = tmp - 59;
             $("body").css("background-color", "red");
             $(".digital").css("color", "black");
-            $(".btn")
-              .removeClass("btnOrange", "btnYellow", "btn")
-              .addClass("btnRed");
+            $(".btn").removeClass("btnOrange").addClass("btnRed");
             $(".seconds").css("color", "black");
+            $("input").css("background-color", "red");
+            $("input").css("color", "black");
+            $(".inputLabel").css("color", "black");
           }
           // tmp != 0 || (tmp = time);
           x.text(m);
-          x.fitText(0.15);
+          x.fitText(0.16);
           sec.text(tmp - 59);
 
           // with 10 minutes left
-          if (tmp - 58 === 600) {
+          if (tmp - 58 === yellowAt) {
             $("body").css("background-color", "#FFCC00");
+            $("input").css("background-color", "#FFCC00");
+            $("input").css("color", "black");
             $(".digital").css("color", "black");
+            $(".inputLabel").css("color", "black");
             $(".btn").removeClass("btn").addClass("btnYellow");
             $(".seconds").css("color", "black");
           }
 
-          if (tmp - 58 === 300) {
-            $("body").css("background-color", "orange");
+          if (tmp - 58 === orangeAt) {
+            $("body").css("background-color", "#ff7b00");
+            $("input").css("background-color", "#ff7b00");
+            $("input").css("color", "black");
             $(".digital").css("color", "black");
-            $(".btn").removeClass("btn", "btnYellow").addClass("btnOrange");
+            $(".inputLabel").css("color", "black");
+            $(".btn").removeClass("btnYellow").addClass("btnOrange");
             $(".seconds").css("color", "black");
           }
 
           if (tmp - 55 === 0) {
             console.log("clearing");
-            // clearInterval(counter);
+          }
+          if (tmp <= -360) {
+            clearInterval(counter);
           }
         }
+
+        // stop button
+        $("#stopButton").click(function () {
+          clearInterval(counter);
+          document.location.reload();
+        });
 
         // start button
         $("#goButton").click(function () {
@@ -170,12 +187,12 @@
             clearInterval(counter);
           }
           let input = $("#totalTime").val();
-          console.log(input);
           time = input * 60 + 59;
           tmp = time;
           x = $(".digital");
           sec = $(".seconds");
-
+          yellowAt = $("#yellowTime").val() * 60;
+          orangeAt = $("#orangeTime").val() * 60;
           counter = setInterval(myTimer, 1000);
         });
       });
