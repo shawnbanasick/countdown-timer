@@ -25,6 +25,7 @@
 
     <script src="src/jquery-3.6.0.min.js"></script>
     <script src="src/jquery.fittext.js"></script>
+    <script src="src/NoSleep.min.js"></script>
 
     <link
       rel="stylesheet"
@@ -126,6 +127,10 @@
         let yellowAt = 600;
         let orangeAt = 300;
 
+        // initialize
+        var noSleep = new NoSleep();
+        var wakeLockEnabled = false;
+
         // timer
         function myTimer() {
           var c = tmp--,
@@ -170,14 +175,16 @@
           if (tmp - 55 === 0) {
             console.log("clearing");
           }
-          if (tmp <= -360) {
+          if (tmp <= -3600) {
             clearInterval(counter);
+            noSleep.disable(); // let the screen turn off.
           }
         }
 
         // stop button
         $("#stopButton").click(function () {
           clearInterval(counter);
+          noSleep.disable(); // let the screen turn off.
           document.location.reload();
         });
 
@@ -194,6 +201,10 @@
           yellowAt = $("#yellowTime").val() * 60;
           orangeAt = $("#orangeTime").val() * 60;
           counter = setInterval(myTimer, 1000);
+          if (!wakeLockEnabled) {
+            noSleep.enable(); // keep the screen on!
+            wakeLockEnabled = true;
+          }
         });
       });
     </script>
