@@ -95,36 +95,35 @@
 
   <body>
     <div class="container">
-      <div>
+      <div class="leftContainer">
+        <label class="inputLabel" for="totalTime">Time:</label>
         <input id="totalTime" />
         <div class="buttonsHolder">
           <button class="btn" id="goButton">Start</button>
           <button class="btn" id="stopButton">Stop</button>
         </div>
-        <div class="spacerDiv"></div>
-        <div class="spacerDiv"></div>
         <label class="inputLabel" for="yellowTime">Yellow at:</label>
         <input value="10" id="yellowTime" />
-        <div class="spacerDiv"></div>
-        <div class="spacerDiv"></div>
-
         <label class="inputLabel" for="orangeTime">Orange at:</label>
         <input value="5" id="orangeTime" />
+        <div class="seconds"></div>
       </div>
       <div class="rightContainer">
-        <div class="digital">0</div>
-        <div class="seconds"></div>
+        <span class="digital">0</span>
       </div>
     </div>
     <script>
       $(document).ready(function () {
         let time;
         let tmp;
-        let x;
+        let x = $(".digital");
         let counter;
         let sec;
         let yellowAt = 600;
         let orangeAt = 300;
+
+        // adjust text size
+        x.fitText(0.135);
 
         // timer
         function myTimer() {
@@ -134,7 +133,6 @@
           if (tmp === 0) {
             tmp = tmp - 59;
             $("body").css("background-color", "red");
-            55;
             $(".digital").css("color", "black");
             $(".btn").removeClass("btnOrange").addClass("btnRed");
             $(".seconds").css("color", "black");
@@ -146,7 +144,6 @@
           }
           // tmp != 0 || (tmp = time);
           x.text(m);
-          x.fitText(0.16);
           sec.text(tmp - 59);
 
           // with 10 minutes left
@@ -196,7 +193,6 @@
           let input = $("#totalTime").val();
           time = input * 60 + 59;
           tmp = time;
-          x = $(".digital");
           sec = $(".seconds");
           yellowAt = $("#yellowTime").val() * 60;
           orangeAt = $("#orangeTime").val() * 60;
