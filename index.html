@@ -123,7 +123,7 @@
         let orangeAt = 300;
 
         // adjust text size
-        x.fitText(0.135);
+        x.fitText(0.14);
 
         // timer
         function myTimer() {
@@ -131,20 +131,20 @@
             m = (c / 60) >> 0;
 
           if (tmp === 0) {
-            tmp = tmp - 59;
             $("body").css("background-color", "red");
             $(".digital").css("color", "black");
             $(".btn").removeClass("btnOrange").addClass("btnRed");
             $(".seconds").css("color", "black");
             $("input").css("background-color", "red");
             $("input").css("color", "black");
+            $("input").css("border", "2px solid black");
             $("#goButton").css("background-color", "red");
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
           }
           // tmp != 0 || (tmp = time);
           x.text(m);
-          sec.text(tmp - 59);
+          sec.text(tmp);
 
           // with 10 minutes left
           if (tmp - 58 === yellowAt) {
@@ -191,7 +191,7 @@
             clearInterval(counter);
           }
           let input = $("#totalTime").val();
-          time = input * 60 + 59;
+          time = input * 60;
           tmp = time;
           sec = $(".seconds");
           yellowAt = $("#yellowTime").val() * 60;
