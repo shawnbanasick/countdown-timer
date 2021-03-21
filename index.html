@@ -103,9 +103,9 @@
           <button class="btn" id="stopButton">Stop</button>
         </div>
         <label class="inputLabel" for="yellowTime">Yellow at:</label>
-        <input value="10" id="yellowTime" />
+        <input id="yellowTime" />
         <label class="inputLabel" for="orangeTime">Orange at:</label>
-        <input value="5" id="orangeTime" />
+        <input id="orangeTime" />
         <div class="seconds"></div>
       </div>
       <div class="rightContainer">
@@ -180,7 +180,7 @@
           sec.text(tmp);
 
           // Yellow at user specified time (if indicated)
-          if (tmp - 58 === yellowAt && yellowAt !== 0) {
+          if (tmp - 59 === yellowAt && yellowAt !== 0) {
             $("body").css("background-color", "#FFCC00");
             $("input").css("background-color", "#FFCC00");
             $("input").css("color", "black");
@@ -192,7 +192,7 @@
           }
 
           // Orange at user specified time (if indicated)
-          if (tmp - 58 === orangeAt && orangeAt !== 0) {
+          if (tmp - 59 === orangeAt && orangeAt !== 0) {
             $("body").css("background-color", "#ff7b00");
             $("input").css("background-color", "#ff7b00");
             $("input").css("color", "black");
@@ -204,7 +204,7 @@
             $(".seconds").css("color", "black");
           }
 
-          // failsafe
+          // failsafe at -60 minutes
           if (tmp <= -3600) {
             clearInterval(counter);
             wakeLock.release();
@@ -244,6 +244,8 @@
         // stop button
         $("#stopButton").click(function () {
           clearInterval(counter);
+          wakeLock.release();
+          wakeLock = null;
           document.location.reload();
         });
 
