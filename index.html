@@ -116,16 +116,46 @@
       $(document).ready(function () {
         let time;
         let tmp;
-        let x = $(".digital");
+        let digit = $(".digital");
         let counter;
         let sec;
-        let yellowAt = 600;
-        let orangeAt = 300;
+        let yellowAt;
+        let orangeAt;
 
-        // adjust text size
-        x.fitText(0.14);
+        // adjust text size with library
+        digit.fitText(0.14);
 
-        // timer
+        // test for wakelock
+        if ("wakeLock" in navigator) {
+          console.log("wake lock supported");
+        }
+
+        // The wake lock sentinel.
+        let wakeLock = null;
+
+        // Function that attempts to request a screen wake lock.
+        const requestWakeLock = async () => {
+          try {
+            wakeLock = await navigator.wakeLock.request();
+            wakeLock.addEventListener("release", () => {
+              console.log("Screen Wake Lock released:", wakeLock.released);
+            });
+            console.log("Screen Wake Lock released:", wakeLock.released);
+          } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+          }
+        };
+
+        // Request a screen wake lock…
+        requestWakeLock();
+
+        // …and release it again after 5s.
+        window.setTimeout(() => {
+          wakeLock.release();
+          wakeLock = null;
+        }, 5000);
+
+        // timer LOOPED
         function myTimer() {
           var c = tmp--,
             m = (c / 60) >> 0;
@@ -142,24 +172,25 @@
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
           }
-          // tmp != 0 || (tmp = time);
-          x.text(m);
+
+          // send to display
+          digit.text(m);
           sec.text(tmp);
 
-          // with 10 minutes left
-          if (tmp - 58 === yellowAt) {
+          // Yellow at user specified time (if indicated)
+          if (tmp - 58 === yellowAt && yellowAt !== 0) {
             $("body").css("background-color", "#FFCC00");
             $("input").css("background-color", "#FFCC00");
             $("input").css("color", "black");
             $("input").css("border", "2px solid black");
-
             $(".digital").css("color", "black");
             $(".inputLabel").css("color", "black");
             $(".btn").removeClass("btn").addClass("btnYellow");
             $(".seconds").css("color", "black");
           }
 
-          if (tmp - 58 === orangeAt) {
+          // Orange at user specified time (if indicated)
+          if (tmp - 58 === orangeAt && orangeAt !== 0) {
             $("body").css("background-color", "#ff7b00");
             $("input").css("background-color", "#ff7b00");
             $("input").css("color", "black");
@@ -171,13 +202,42 @@
             $(".seconds").css("color", "black");
           }
 
-          if (tmp - 55 === 0) {
-            console.log("clearing");
-          }
+          // failsafe
           if (tmp <= -3600) {
             clearInterval(counter);
+            wakeLock.release();
+            wakeLock = null;
           }
         }
+
+        // get references
+        let $totalTime = $("#totalTime");
+        let $yellowTime = $("#yellowTime");
+        let $orangeTime = $("#orangeTime");
+
+        // set totalTime to stored time
+        let storedTime = +localStorage.getItem("totalTime") || "";
+        $totalTime.val(storedTime);
+        // listen for changes in total time
+        $totalTime.change(function () {
+          localStorage.setItem("totalTime", $(this).val());
+        });
+
+        // set yellowTime to stored time
+        let storedYellowTime = +localStorage.getItem("yellowTime") || "";
+        $yellowTime.val(storedYellowTime);
+        // listen for changes in total time
+        $yellowTime.change(function () {
+          localStorage.setItem("yellowTime", $(this).val());
+        });
+
+        // set orangeTime to stored time
+        let storedOrangeTime = +localStorage.getItem("orangeTime") || "";
+        $orangeTime.val(storedOrangeTime);
+        // listen for changes in total time
+        $orangeTime.change(function () {
+          localStorage.setItem("orangeTime", $(this).val());
+        });
 
         // stop button
         $("#stopButton").click(function () {
@@ -190,12 +250,12 @@
           if (counter) {
             clearInterval(counter);
           }
-          let input = $("#totalTime").val();
+          let input = +localStorage.getItem("totalTime");
           time = input * 60;
           tmp = time;
           sec = $(".seconds");
-          yellowAt = $("#yellowTime").val() * 60;
-          orangeAt = $("#orangeTime").val() * 60;
+          yellowAt = +localStorage.getItem("yellowTime") * 60;
+          orangeAt = +localStorage.getItem("orangeTime") * 60;
           counter = setInterval(myTimer, 1000);
         });
       });
