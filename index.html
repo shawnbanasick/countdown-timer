@@ -149,11 +149,13 @@
         // Request a screen wake lock…
         requestWakeLock();
 
-        // …and release it again after 5s.
-        window.setTimeout(() => {
-          wakeLock.release();
-          wakeLock = null;
-        }, 5000);
+        const handleVisibilityChange = async () => {
+          if (wakeLock !== null && document.visibilityState === "visible") {
+            await requestWakeLock();
+          }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         // timer LOOPED
         function myTimer() {
