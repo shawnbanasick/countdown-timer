@@ -123,15 +123,16 @@
       // };
 
       function playSound(frequency, type) {
-        let context = new AudioContext();
-        let o = context.createOscillator();
-        let g = context.createGain();
-        o.type = type;
-        o.connect(g);
-        o.frequency.value = frequency;
-        g.connect(context.destination);
-        o.start(0);
-        g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+          let context = new AudioContext();
+          let o = context.createOscillator();
+          let g = context.createGain();
+          o.type = type;
+          o.connect(g);
+          o.frequency.value = frequency;
+          g.connect(context.destination);
+          o.start(0);
+          g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+        }
       }
 
       $(document).ready(function () {
@@ -196,18 +197,17 @@
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
 
-            setTimeout(function () {
-              playSound(261.6, "sine");
-            }, 500);
-            setTimeout(function () {
-              playSound(440.0, "sine");
-            }, 500);
-            setTimeout(function () {
-              playSound(830.6, "sine");
-            }, 500);
-
-            // playSound(440.0, "sine");
-            // playSound(830.6, "sine");
+            const sleep = (milliseconds) => {
+              return new Promise(resolve => setTimeout(resolve, milliseconds))
+            };
+            const sounds = [261.6, 440.0, 830.6,  440.0, 261.6];
+            const alertSounds = async () => {
+              for (const sound of sounds) {
+              await sleep(200);
+              playSound(sound, "sine");
+             }
+            }
+            alertSounds();
           }
 
           // send to display
