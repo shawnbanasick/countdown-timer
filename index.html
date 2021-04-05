@@ -123,8 +123,9 @@
       // };
 
       function playSound(frequency, type) {
-        o = context.createOscillator();
-        g = context.createGain();
+        let context = new AudioContext();
+        let o = context.createOscillator();
+        let g = context.createGain();
         o.type = type;
         o.connect(g);
         o.frequency.value = frequency;
