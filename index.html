@@ -123,17 +123,26 @@
       // };
 
       function playSound(frequency, type) {
-          let context = new AudioContext();
-          let o = context.createOscillator();
-          let g = context.createGain();
-          o.type = type;
-          o.connect(g);
-          o.frequency.value = frequency;
-          g.connect(context.destination);
-          o.start(0);
-          g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
-        }
+        let context = new AudioContext();
+        let o = context.createOscillator();
+        let g = context.createGain();
+        o.type = type;
+        o.connect(g);
+        o.frequency.value = frequency;
+        g.connect(context.destination);
+        o.start(0);
+        g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
       }
+      const sleep = (milliseconds) => {
+        return new Promise((resolve) => setTimeout(resolve, milliseconds));
+      };
+      const sounds = [261.6, 440.0, 830.6, 440.0, 261.6];
+      const alertSounds = async () => {
+        for (const sound of sounds) {
+          await sleep(200);
+          playSound(sound, "sine");
+        }
+      };
 
       $(document).ready(function () {
         let time;
@@ -197,16 +206,6 @@
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
 
-            const sleep = (milliseconds) => {
-              return new Promise(resolve => setTimeout(resolve, milliseconds))
-            };
-            const sounds = [261.6, 440.0, 830.6,  440.0, 261.6];
-            const alertSounds = async () => {
-              for (const sound of sounds) {
-              await sleep(200);
-              playSound(sound, "sine");
-             }
-            }
             alertSounds();
           }
 
