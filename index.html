@@ -195,9 +195,19 @@
             $("#goButton").css("background-color", "red");
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
-            playSound(261.6, "sine");
-            playSound(440.0, "sine");
-            playSound(830.6, "sine");
+
+            setTimeout(function () {
+              playSound(261.6, "sine");
+            }, 500);
+            setTimeout(function () {
+              playSound(440.0, "sine");
+            }, 500);
+            setTimeout(function () {
+              playSound(830.6, "sine");
+            }, 500);
+
+            // playSound(440.0, "sine");
+            // playSound(830.6, "sine");
           }
 
           // send to display
