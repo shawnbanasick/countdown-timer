@@ -113,6 +113,26 @@
       </div>
     </div>
     <script>
+      // const beep1 = () => {
+      //   let o = (A = new AudioContext()).createOscillator();
+      //   o.connect(A.destination);
+      //   o.frequency.value = 261.6;
+      //   o.type = "sine";
+      //   o.start(0);
+      //   setTimeout("o.stop(0)", 500);
+      // };
+
+      function playSound(frequency, type) {
+        o = context.createOscillator();
+        g = context.createGain();
+        o.type = type;
+        o.connect(g);
+        o.frequency.value = frequency;
+        g.connect(context.destination);
+        o.start(0);
+        g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+      }
+
       $(document).ready(function () {
         let time;
         let tmp;
@@ -162,6 +182,7 @@
           var c = tmp--,
             m = (c / 60) >> 0;
 
+          // TIME OUT!
           if (tmp === 0) {
             $("body").css("background-color", "red");
             $(".digital").css("color", "black");
@@ -173,6 +194,9 @@
             $("#goButton").css("background-color", "red");
             $("#stopButton").css("background-color", "red");
             $(".inputLabel").css("color", "black");
+            playSound(261.6, "sine");
+            playSound(440.0, "sine");
+            playSound(830.6, "sine");
           }
 
           // send to display
