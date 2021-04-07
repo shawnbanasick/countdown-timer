@@ -98,13 +98,11 @@
       <div class="leftContainer">
         <label class="inputLabel" for="totalTime">Time:</label>
         <input id="totalTime" />
-        <label class="inputLabel" for="yellowTime">Yellow at:</label>
+        <label class="inputLabel" for="yellowTime">Yellow:</label>
         <input id="yellowTime" />
-        <label class="inputLabel" for="orangeTime">Sound</label>
-        <input id="orangeTime" />
+        <button class="btn" id="soundButton">Sound</button>
         <div class="buttonsHolder">
           <button class="btn" id="goButton">Start</button>
-          <button class="btn" id="stopButton">Stop</button>
         </div>
         <div class="seconds"></div>
       </div>
@@ -143,6 +141,36 @@
         let sec;
         let yellowAt;
         let orangeAt;
+
+        // get sound button Status
+        let soundStatus = localStorage.getItem("soundStatus");
+        console.log(soundStatus);
+        let $soundButton = $("#soundButton");
+
+        if (soundStatus === "true") {
+          localStorage.setItem("soundStatus", "true");
+          $soundButton.css("border", "1px solid #83cafe");
+          $soundButton.css("color", "#83cafe");
+        } else if (soundStatus === null || soundStatus === "false") {
+          localStorage.setItem("soundStatus", "false");
+          $soundButton.css("border", "1px solid lightslategray");
+          $soundButton.css("color", "lightslategray");
+        }
+
+        $("#soundButton").click(function () {
+          let soundStatus = localStorage.getItem("soundStatus");
+          let $soundButton = $(this);
+          console.log("text", $soundButton.text());
+          if (soundStatus === "false") {
+            localStorage.setItem("soundStatus", "true");
+            $soundButton.css("border", "1px solid #83cafe");
+            $soundButton.css("color", "#83cafe");
+          } else {
+            localStorage.setItem("soundStatus", "false");
+            $soundButton.css("border", "1px solid lightslategray");
+            $soundButton.css("color", "lightslategray");
+          }
+        });
 
         // adjust text size with library
         digit.fitText(0.14);
@@ -193,11 +221,16 @@
             $("input").css("background-color", "red");
             $("input").css("color", "black");
             $("input").css("border", "2px solid black");
-            $("#goButton").css("background-color", "red");
-            $("#stopButton").css("background-color", "red");
+            $("button").css("background-color", "red");
+            $("button").css("color", "black");
+            $("button").css("border", "2px solid black");
             $(".inputLabel").css("color", "black");
 
-            alertSounds();
+            let soundStatus = localStorage.getItem("soundStatus");
+            console.log(soundStatus);
+            if (soundStatus === "true") {
+              alertSounds();
+            }
           }
 
           // send to display
@@ -214,6 +247,9 @@
             $("input").css("background-color", "#FFCC00");
             $("input").css("color", "black");
             $("input").css("border", "2px solid black");
+            $("button").css("background-color", "#FFCC00");
+            $("button").css("color", "black");
+            $("button").css("border", "2px solid black");
             $(".digital").css("color", "black");
             $(".inputLabel").css("color", "black");
             $(".btn").removeClass("btn").addClass("btnYellow");
@@ -261,27 +297,29 @@
           localStorage.setItem("orangeTime", $(this).val());
         });
 
-        // stop button
-        $("#stopButton").click(function () {
-          clearInterval(counter);
-          wakeLock.release();
-          wakeLock = null;
-          document.location.reload();
-        });
-
         // start button
         $("#goButton").click(function () {
-          if (counter) {
+          let buttonText = $("#goButton").text();
+          console.log(buttonText);
+
+          if (buttonText === "Start") {
+            if (counter) {
+              clearInterval(counter);
+            }
+            let input = +localStorage.getItem("totalTime");
+            time = input * 60;
+            tmp = time;
+            sec = $(".seconds");
+            yellowAt = +localStorage.getItem("yellowTime") * 60;
+            orangeAt = +localStorage.getItem("orangeTime") * 60;
+            counter = setInterval(myTimer, 1000);
+            $("#goButton").text("Stop");
+          } else {
             clearInterval(counter);
+            wakeLock.release();
+            wakeLock = null;
+            document.location.reload();
           }
-          let input = +localStorage.getItem("totalTime");
-          time = input * 60;
-          tmp = time;
-          sec = $(".seconds");
-          yellowAt = +localStorage.getItem("yellowTime") * 60;
-          orangeAt = +localStorage.getItem("orangeTime") * 60;
-          counter = setInterval(myTimer, 1000);
-          $("#goButton").prop("disabled", true);
         });
       });
     </script>
