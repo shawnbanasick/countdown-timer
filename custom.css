@@ -71,6 +71,7 @@ button:active {
   color: black;
   margin: 5px;
   height: 25px;
+  width: 60px;
 }
 
 .btnBlue {
